@@ -1,0 +1,345 @@
+\documentclass[a4paper,11pt,final]{article}
+
+\usepackage[american]{babel} % needed for iso dates
+\usepackage[iso,american]{isodate} % use iso format for dates
+\usepackage[final]{listings} % code listings
+\usepackage{longtable} % auto-breaking tables
+\usepackage{booktabs} % fancy tables
+\usepackage[labelfont=bf,position=below,singlelinecheck=true,width=.8\textwidth]{caption}
+\usepackage{relsize} % provide relative font size changes
+\usepackage{underscore} % remove special status of '_' in ordinary text
+\usepackage{verbatim} % improved verbatim environment
+\usepackage{parskip} % handle non-indented paragraphs "properly"
+%\usepackage{array} % new column definitions for tables
+\usepackage[normalem]{ulem}
+\usepackage[svgnames,table,hyperref]{xcolor} % define colors for strikeouts and underlines
+\usepackage{amsmath} % additional math symbols
+\usepackage[centercolon=true]{mathtools}
+%\usepackage{mathrsfs} % mathscr font
+%\usepackage{multicol}
+\usepackage{fixltx2e}
+\usepackage{xspace}
+\usepackage{fixme}
+\usepackage[final]{graphicx}
+\usepackage[autostyle,english=american]{csquotes}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{shapes.geometric}
+\usepackage{hyperref}
+
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+
+\usepackage{fontspec}
+\pdfprotrudechars=2
+\pdfadjustspacing=2
+\usepackage{luatextra}
+\usepackage{microtype}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont[Numbers=OldStyle]{Cambria}
+\setsansfont[Scale=MatchLowercase,Numbers=OldStyle]{Calibri}
+\setmonofont[Scale=MatchLowercase]{Consolas}
+\usepackage{lualatex-math}
+\usepackage[math-style=TeX]{unicode-math}
+\setmathfont{Cambria Math}
+
+\usepackage{tocloft}
+\usepackage{titling}
+\usepackage{titlesec}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage[absolute]{textpos}
+\setlength{\TPHorizModule}{1cm}
+\setlength{\TPVertModule}{1cm}
+
+\usepackage{natbib}
+\defcitealias{cpp11}{\CppXI}
+\defcitealias{cppdraft}{\CppXIV}
+\defcitealias{oleg1}{N3950}
+\defcitealias{oleg2}{N4114}
+\defcitealias{oleg3}{N4126}
+
+\renewcommand{\thesection}{\Roman{section}.}
+\cftsetindents{section}{0em}{2em}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+
+\renewcommand{\theenumi}{\roman{enumi}}
+\renewcommand{\labelenumi}{(\theenumi)}
+
+\setcounter{tocdepth}{1}
+
+%%--------------------------------------------------
+%% Environments for code listings.
+
+% We use the 'listings' package, with some small customizations.  The
+% most interesting customization: all TeX commands are available
+% within comments.  Comments are set in italics, keywords and strings
+% don't get special treatment.
+
+\definecolor{directiveclr}{RGB}{128,64,0}
+\definecolor{keywordclr}{RGB}{0,0,255}
+\definecolor{identifierclr}{RGB}{0,0,0}
+\definecolor{emphstyleclr}{RGB}{0,128,192}
+\definecolor{constantclr}{RGB}{164,0,164}
+\definecolor{stringstyleclr}{RGB}{220,20,60} %{128,128,128}
+\definecolor{commentclr}{RGB}{0,128,0}
+
+\lstset{language=C++,
+    basicstyle=\footnotesize\ttfamily,
+    backgroundcolor=\color{gray!20},
+    keywordstyle=\bfseries\color{keywordclr},
+    directivestyle=\color{directiveclr},
+    commentstyle=\itshape\color{commentclr},
+    identifierstyle=\color{identifierclr},
+    emph={T},
+    emphstyle=\color{emphstyleclr},
+    emph=[2]{CONSTANT},
+    emphstyle=[2]\color{constantclr},
+    stringstyle=\color{stringstyleclr},
+    moredelim=[is][\color{directiveclr}]{_}{_},
+    xleftmargin=7em,
+    xrightmargin=7em,
+    showstringspaces=false,
+    columns=flexible,
+    keepspaces=true,
+    captionpos=b,
+    texcl=true
+}
+%\makeatletter
+%\def\fnum@lstlisting{%
+  %{\bfseries\lstlistingname
+   %\ifx\lst@@caption\@empty\else~\thelstlisting\fi}}%
+%\makeatother
+
+% Code and definitions embedded in text.
+\newcommand{\tcode}[1]{\lstinline[basicstyle=\normalsize\ttfamily]{#1}}
+
+\newcommand{\Rplus}{\protect\hspace{-.1em}\protect\raisebox{.1ex}{\small+}}
+\newcommand{\Cpp}{\mbox{C\Rplus\Rplus}\xspace}
+\newcommand{\CppXI}{\mbox{C\Rplus\Rplus 11}\xspace}
+\newcommand{\CppXIV}{\mbox{C\Rplus\Rplus 14}\xspace}
+
+% Theorem environments
+\usepackage{ntheorem}
+\usepackage[framemethod=default,skipabove=1.5em,skipbelow=1.5em]{mdframed}
+\theorembodyfont{\upshape}
+\mdfdefinestyle{defstyle}{%
+    linecolor=DarkRed,%
+    backgroundcolor=DarkRed!10,%
+    linewidth=2pt%
+}
+\newmdtheoremenv[style=defstyle,ntheorem=true]{defi}{Definition}[subsection]
+
+\theorembodyfont{\itshape}
+\mdfdefinestyle{thmstyle}{%
+    linecolor=DarkGreen,%
+    backgroundcolor=DarkGreen!10,%
+    linewidth=2pt
+}
+\newmdtheoremenv[style=thmstyle,ntheorem=true]{prop}[defi]{Proposition}
+\newmdtheoremenv[style=thmstyle,ntheorem=true]{lem}[defi]{Lemma}
+
+\theoremheaderfont{\normalfont\itshape\bfseries}
+\theorembodyfont{\upshape}
+\mdfdefinestyle{remstyle}{%
+    linecolor=DarkSlateBlue,%
+    backgroundcolor=DarkSlateBlue!10,%
+    linewidth=2pt%
+}
+\newmdtheoremenv[style=remstyle,ntheorem=true]{rem}[defi]{Remark}
+\newmdtheoremenv[style=remstyle,ntheorem=true]{exam}[defi]{Example}
+
+\setlength{\droptitle}{7em}
+\title{Explicitly defaulted binary operators}
+\author{}
+\date{}
+
+\makeatletter
+\hypersetup{
+    unicode=true,
+    pdftitle={\@title},
+    pdfsubject={Proposal — Programming Language C++, Language Evolution Working Group},
+    pdfauthor={Marcel Wid},
+    pdfkeywords={proposal, c++, operator, binary, defaulted},
+    bookmarksnumbered=true,
+    bookmarksdepth=subsection,
+    pdfpagemode=UseOutlines,
+    pdfstartview=FitH,
+    linktocpage=true,
+    colorlinks=true,
+    linkcolor=Red,
+    citecolor=DarkCyan,
+    urlcolor=DarkMagenta,
+    plainpages=false
+}
+\makeatother
+
+\newcommand{\nprecsim}{\mathrel{\ooalign{$\precsim$\cr
+  \hidewidth\raise.225ex\hbox{$\slash\mkern2mu$}\cr}}\xspace}
+
+\newcommand{\defby}{\mbox{\ensuremath{\,:\Longleftrightarrow\,}}\xspace}
+
+\numberwithin{equation}{subsection}
+
+\begin{document}
+
+\begin{textblock}{12}(8.5,2)
+\begin{tabular}{l l}
+\textbf{Document number:} & NXXXX\\
+\textbf{Date:} & \today\\
+%\textbf{Revises:} & N4109\\
+\textbf{Project:} & Programming Language \Cpp,\\
+& Language Evolution Working Group\\
+\textbf{Reply to:} & Marcel Wid\\
+& <\href{mailto:marcel.wid@ods-solutions.de}{marcel.wid@ods-solutions.de}>
+\end{tabular}
+\end{textblock}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+Since \citetalias{cpp11} it is possible to explicitly default some special member functions of a class. We propose to extend the possibility to explicitly default the binary operators \tcode{operator*}, \tcode{operator/}, \tcode{operator\%}, \tcode{operator+}, \tcode{operator-}, \tcode{operator>>}, \tcode{operator<<}, \tcode{operator&}, \tcode{operator^} and \tcode{operator|}. All these operators can be defined using the corresponding compound assignment operator. We also propose to explicitly default the postfix incerement \tcode{operator++(int)} and postfix decrement \tcode{operator--(int)}. They can be defined using the corresponding prefix form.
+
+\section{Motivation and Scope}
+\subsection{Binary Operators}
+It is good and common practice defining the assignment version \tcode{a+=b} when defining \tcode{a+b} for a class type and to let both have the same semantics. The canonical way to achieve this is to define \tcode{operator+} in terms of \tcode{operator+=}.
+
+\begin{lstlisting}[caption=Definition of \tcode{operator+} using \tcode{operator+=}]
+class T
+{
+    // ...
+};
+
+T& T::operator+=(const T& other)
+{
+    // implementation
+    return *this;
+}
+
+T operator+(T lhs, const T& rhs)
+{
+    return lhs += rhs;
+}
+\end{lstlisting}
+
+Note that \tcode{operator+} takes it first argument by value in order to make use of move semantics. This results in a lot of boilerplate code, is needlessly verbose and error prone. Hence we propose to allow the following syntax, which is equivalent to the above.
+\begin{lstlisting}[caption=Defining \tcode{operator+} as explicitly defaulted]
+class T
+{
+    // ...
+};
+
+T& T::operator+=(const T& other)
+{
+    // implementation
+    return *this;
+}
+
+T operator+(T lhs, const T& rhs) = default;
+\end{lstlisting}
+
+\subsection{Increment and Decrement}
+It is also good practice to define the postincrement operator in terms of the preincrement one and the same for decrement operators.
+\begin{lstlisting}[caption=Definition of postincrement using preincrement]
+class T
+{
+    // ...
+};
+
+T& T::operator++()
+{
+    // implementation
+    return *this;
+}
+
+T T::operator++(int)
+{
+    T old{*this};
+    ++(*this);
+    return old;
+}
+\end{lstlisting}
+
+To release the programmer from writing such mechanical lines of code, we propose to explicitly default \tcode{operator++(int)}. The following code fragment is equivalent to the above one.
+\begin{lstlisting}[caption=Defining \tcode{operator++(int)} as explicitly defaulted]
+class T
+{
+    // ...
+};
+
+T& T::operator++()
+{
+    // implementation
+    return *this;
+}
+
+T T::operator++(int) = default;
+\end{lstlisting}
+
+\section{Design Decisions}
+We refer the reader to \citeauthor*[item 27 and 28]{codingstd}, for a general discussion of implementing these operators. It should be notet that this proposal does not break any existing code, since this new feature has to be explicitly "opt in". Moreover, no new keyword has to be added to the core language. Only the set of functions which can be explicitly defaulted is enlarged.
+
+\section{Technical Specifications}
+\subsection{Informal Specification}
+\subsubsection{Binary Operators}
+Let \verb|@| be one of the binary operators \verb|*|, \verb|/|, \verb|\%|, \verb|+|, \verb|-|, \verb|>>|, \verb|<<|, \verb|&|, \verb|^| or \verb|||. The following code
+\begin{verbatim}
+class T
+{
+    // ...
+};
+
+T operator@(T lhs, const T& rhs) = default;
+\end{verbatim}
+is rewritten to 
+\begin{verbatim}
+class T
+{
+    // ...
+};
+
+T operator@(T lhs, const T& rhs)
+{
+    return lhs @= rhs;
+}
+\end{verbatim}
+
+\subsubsection{Increment and Decrement}
+Let \verb|@| be one of \verb|+| or \verb|-|. 
+The following code
+\begin{verbatim}
+class T
+{
+    // ...
+};
+
+T T::operator@@(int) = default;
+\end{verbatim}
+is rewritten to 
+\begin{verbatim}
+class T
+{
+    // ...
+};
+
+T T::operator@@(int)
+{
+    T old{*this};
+    @@(*this);
+    return old;
+}
+\end{verbatim}
+
+\subsection{Proposed Wording}
+to be added ...
+
+\section{Acknowledgments}
+
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{newapa}
+\bibliography{references}
+
+\end{document}
